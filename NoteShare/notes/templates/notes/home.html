@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotesShare | Home</title>
+    <link rel="stylesheet" href="{% static 'notes/css/home.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container navbar-container">
+            <!-- Logo -->
+            <a href="{% url 'notes:index' %}" class="logo">NotesShare</a>
+
+            <!-- Search bar -->
+            <form class="search-bar" method="get" action="{% url 'notes:search_notes' %}">
+                <input type="text" name="q" placeholder="Search notes..." required>
+                <button type="submit">🔍</button>
+            </form>
+
+            <!-- Nav links -->
+            <nav class="nav-links">
+                <a href="#all-notes">All Notes</a>
+                <a href="{% url 'notes:upload' %}">Upload Notes</a>
+                <a href="{% url 'notes:my_upload' %}">My Notes</a>
+                <a href="{% url 'notes:index' %}" class="btn-nav">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Recently Uploaded Notes -->
+    <section id="recent" class="features">
+        <div class="container">
+            <h2 style="text-align:center; margin-bottom:2rem;">Recently Uploaded Notes</h2>
+            <div class="notes-grid">
+                {% for note in recent %}
+                <div class="note-card">
+                    <h4>{{ note.title }}</h4>
+                    <p>Uploaded by: {{ note.uploaded_by.username }}</p>
+                    <a href="{{ note.file.url }}" class="btn btn-primary" download>Download</a>
+                    <a href="{{ note.file.url }}" class="btn btn-secondary" target="_blank">View</a>
+                </div>
+                {% empty %}
+                <p>No recent notes found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- All Notes -->
+    <section id="all-notes" class="how-it-works">
+        <div class="container">
+            <h2>All Notes</h2>
+            <div class="notes-grid">
+                {% for note in all_notes %}
+                <div class="note-card">
+                    <h4>{{ note.title }}</h4>
+                    <p>Uploaded by: {{ note.uploaded_by.username }}</p>
+                    <a href="{{ note.file.url }}" class="btn btn-primary" download>Download</a>
+                    <a href="{{ note.file.url }}" class="btn btn-secondary" target="_blank">View</a>
+                </div>
+                {% empty %}
+                <p>No notes found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 NotesShare. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

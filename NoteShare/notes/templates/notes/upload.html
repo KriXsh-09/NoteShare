@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotesShare | Upload Notes</title>
+    <link rel="stylesheet" href="{% static 'notes/css/upload.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container navbar-container">
+            <a href="{% url 'notes:index' %}" class="logo">NotesShare</a>
+            <nav class="nav-links">
+                <a href="{% url 'notes:index' %}" class="btn-nav">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Upload Form Section -->
+    <section class="upload-section">
+        <div class="container">
+            <h2 style="text-align:center; margin-bottom:2rem;">Upload Your Notes</h2>
+            <div class="form-container">
+                <form method="POST" enctype="multipart/form-data" id="noteForm">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_title">Title</label>
+                        {{ form.title }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_description">Description</label>
+                        {{ form.description }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_file">Select File</label>
+                        <div class="file-drop-area" id="fileDropArea">
+                            <span class="file-msg">Drag & drop your file here or click to select</span>
+                            {{ form.file }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 NotesShare. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Drag & Drop JS -->
+    <script>
+        const fileDropArea = document.getElementById('fileDropArea');
+        const fileInput = fileDropArea.querySelector('input[type=file]');
+        const fileMsg = fileDropArea.querySelector('.file-msg');
+
+        // Highlight drop area on drag
+        fileDropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileDropArea.classList.add('highlight');
+        });
+
+        fileDropArea.addEventListener('dragleave', () => {
+            fileDropArea.classList.remove('highlight');
+        });
+
+        // Drop file
+        fileDropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileDropArea.classList.remove('highlight');
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                fileMsg.textContent = e.dataTransfer.files[0].name;
+            }
+        });
+
+        // Click to select file
+        fileDropArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length) {
+                fileMsg.textContent = fileInput.files[0].name;
+            }
+        });
+    </script>
+</body>
+</html>

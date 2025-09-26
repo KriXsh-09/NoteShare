@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotesShare | Register</title>
+ 
+    <link rel="stylesheet" href="{% static 'notes/css/register.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container navbar-container">
+            <a href="{% url 'notes:index' %}" class="logo">NotesShare</a>
+            <nav class="nav-links">
+                <a href="{% url 'notes:login' %}" class="btn-nav">Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Register Section -->
+    <section class="register-section">
+        <div class="register-container">
+            <h1>Create an Account</h1>
+            <p>Join NotesShare and start sharing your notes.</p>
+
+            <form method="POST" class="register-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+
+            <p class="login-link">
+                Already have an account? <a href="{% url 'notes:login' %}">Login here</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 NotesShare. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+

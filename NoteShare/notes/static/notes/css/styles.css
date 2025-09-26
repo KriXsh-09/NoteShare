@@ -1,0 +1,222 @@
+/* Reset / Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ff9800;
+}
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+.nav-links a {
+    font-size: 1rem;
+    padding: 0.3rem;
+    transition: color 0.3s;
+}
+.nav-links a:hover {
+    color: #ff9800;
+}
+.btn-nav {
+    background-color: #ff9800;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+}
+.btn-nav:hover {
+    background-color: #e68900;
+}
+
+/* Hero */
+.hero {
+    position: relative;
+    height: 80vh;
+    background: url('images/library-bg.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+}
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+}
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+.hero .highlight {
+    background-color: #ff9800;
+    padding: 0 8px;
+    border-radius: 4px;
+}
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+.btn {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+.btn-primary {
+    background-color: #ff9800;
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #e68900;
+    transform: translateY(-2px);
+}
+
+/* Features */
+.features {
+    padding: 4rem 0;
+    background-color: #f5f5f5;
+}
+.feature-item {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+.feature-item:hover {
+    transform: translateY(-5px);
+}
+.feature-item .icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+.features .container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+}
+
+/* How It Works */
+.how-it-works {
+    padding: 4rem 0;
+}
+.how-it-works h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+.steps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+.step {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    width: 220px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+.step:hover {
+    transform: translateY(-4px);
+}
+.step-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ff9800;
+    margin-bottom: 0.8rem;
+}
+
+/* CTA Section */
+.cta {
+    background: #ff9800;
+    color: white;
+    padding: 3rem 0;
+    text-align: center;
+}
+.cta h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.2rem;
+}
+.btn-secondary {
+    background: white;
+    color: #ff9800;
+}
+.btn-secondary:hover {
+    background: #f0f0f0;
+}
+
+/* Footer */
+.footer {
+    background: #333;
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+}
+.footer p {
+    margin-bottom: 0.5rem;
+}
+.footer .social-links a {
+    color: #bbbbbb;
+    margin: 0 0.5rem;
+}
+.footer .social-links a:hover {
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    .nav-links {
+        display: none; /* you can replace this with mobile menu toggle if you want */
+    }
+}

@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NotesShare | Get Your Notes</title>
+    <link rel="stylesheet" href="{% static 'notes/css/styles.css' %}" />
+    <!-- You can add a Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container navbar-container">
+            <a href="#" class="logo">NotesShare</a>
+            <nav class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#contact">Contact</a>
+                <a href="/login" class="btn-nav">Login</a>
+                <a href="/register" class="btn-nav">Register</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content container">
+            <h1>Get your <span class="highlight">Notes</span> Today</h1>
+            <p>Upload, share, and download study notes anytime, anywhere.</p>
+            <a href="/register" class="btn btn-primary">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="feature-item">
+                <div class="icon">📘</div>
+                <h3>Upload Notes</h3>
+                <p>Share your study materials with the community.</p>
+            </div>
+            <div class="feature-item">
+                <div class="icon">📚</div>
+                <h3>Download Notes</h3>
+                <p>Access notes from fellow students.</p>
+            </div>
+            <div class="feature-item">
+                <div class="icon">🤝</div>
+                <h3>Learn Together</h3>
+                <p>Collaborate and cultivate knowledge together.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>Register Account</h4>
+                    <p>Create your free account to join.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Upload Notes</h4>
+                    <p>Share your class notes or study guides.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>Download & Learn</h4>
+                    <p>Browse and download others’ notes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Start?</h2>
+            <a href="/register" class="btn btn-secondary">Join Now</a>
+        </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <p>© 2025 NotesShare. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#">Twitter</a> |
+                <a href="#">Instagram</a> |
+                <a href="#">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
