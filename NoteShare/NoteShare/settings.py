@@ -1,12 +1,13 @@
 # notesshare/settings.py
 import os
 from pathlib import Path
+from decouple import config
+
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-SECRET_KEY = 'replace-me-with-a-secure-key'
+SECRET_KEY = config('SECRET_KEY')
 
 
 DEBUG = True
@@ -21,6 +22,8 @@ INSTALLED_APPS = [
 'django.contrib.messages',
 'django.contrib.staticfiles',
 'notes',
+'cloudinary_storage',
+'cloudinary',
 ]
 
 
@@ -77,13 +80,22 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [BASE_DIR / 'notes' / 'static']
 
+import cloudinary
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+cloudinary.config( 
+  cloud_name = config('CLOUDINARY_NAME'), 
+  api_key = config('CLOUDINARY_API_KEY'), 
+  api_secret = config('CLOUDINARY_API_SECRET'), 
+  secure = True
+)
+
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+#MEDIA_URL = '/media/'
+#MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_REDIRECT_URL = 'notes:home'
 LOGOUT_REDIRECT_URL = 'notes:index'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
