@@ -39,7 +39,7 @@ MIDDLEWARE = [
 ]
 
 
-ROOT_URLCONF = 'NoteShare.urls'
+ROOT_URLCONF = 'NoteShare.NoteShare.urls'
 
 
 TEMPLATES = [
@@ -57,7 +57,7 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = 'NoteShare.wsgi.application'
+WSGI_APPLICATION = 'NoteShare.NoteShare.wsgi.application'
 
 import dj_database_url
 DATABASES = {
