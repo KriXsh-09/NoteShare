@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'NoteShare.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'NoteShare.NoteShare.settings')
 
 application = get_wsgi_application()
