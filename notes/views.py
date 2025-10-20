@@ -19,13 +19,13 @@ def download_note(request, note_id):
 
     if not note.file:
         messages.error(request, "File not available.")
-        return redirect('notes:home')
+        return render(request, 'notes/home.html', {'recent': recent, 'all_notes': all_notes})
 
     # Generate signed URL valid for 1 minute (adjust as needed)
     url, options = cloudinary_url(
         note.file.public_id,
         resource_type='auto',
-        type='private',  # Use 'private' for signed URLs
+        type='authenticated',  # Use 'private' for signed URLs
         sign_url=True,
         expires_at=60
     )
@@ -44,13 +44,13 @@ def view_note(request, note_id):
 
     if not note.file:
         messages.error(request, "File not available.")
-        return redirect('notes:home')
+        return render(request, 'notes/home.html', {'recent': recent, 'all_notes': all_notes})
 
     # Signed URL for preview, valid for 1 minute
     url, options = cloudinary_url(
         note.file.public_id,
         resource_type='auto',
-        type='private',
+        type='authenticated',
         sign_url=True,
         expires_at=60
     )
