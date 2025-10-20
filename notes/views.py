@@ -99,7 +99,7 @@ def delete_note(request, note_id):
         return redirect('notes:my_upload')
 
 
-
+'''
 @login_required
 def upload(request):
 	if request.method == 'POST':
@@ -113,7 +113,41 @@ def upload(request):
 	else:
 		form = NoteForm()
 	return render(request, 'notes/upload.html', {'form': form})
+'''
 
+@login_required
+def upload(request):
+    if request.method == 'POST':
+        form = NoteForm(request.POST, request.FILES)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.uploaded_by = request.user
+
+            uploaded_file = request.FILES.get('file')
+
+            if uploaded_file:
+                # Determine resource_type
+                if uploaded_file.name.lower().endswith('.pdf'):
+                    resource_type = 'raw'  # PDFs as raw documents
+                else:
+                    resource_type = 'auto'  # images
+
+                # Upload to Cloudinary manually
+                upload_result = cloudinary.uploader.upload(
+                    uploaded_file,
+                    folder='Notes_uploaded/',
+                    resource_type=resource_type
+                )
+
+                # Save the Cloudinary URL in your model
+                note.file = upload_result['public_id']
+
+            note.save()
+            messages.success(request, 'Note uploaded successfully.')
+            return redirect('notes:my_upload')
+    else:
+        form = NoteForm()
+    return render(request, 'notes/upload.html', {'form': form})
 
 def register(request):
 	if request.method == 'POST':
