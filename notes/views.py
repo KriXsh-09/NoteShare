@@ -98,8 +98,6 @@ def delete_note(request, note_id):
         messages.error(request, "Invalid request.")
         return redirect('notes:my_upload')
 
-
-'''
 @login_required
 def upload(request):
 	if request.method == 'POST':
@@ -113,40 +111,6 @@ def upload(request):
 	else:
 		form = NoteForm()
 	return render(request, 'notes/upload.html', {'form': form})
-'''
-
-@login_required
-def upload(request):
-    if request.method == 'POST':
-        form = NoteForm(request.POST, request.FILES)
-        if form.is_valid():
-            note = form.save(commit=False)
-            note.uploaded_by = request.user
-
-            uploaded_file = request.FILES.get('file')
-
-            if uploaded_file:
-                # Check if PDF
-                if uploaded_file.name.lower().endswith('.pdf'):
-                    # Upload manually as raw
-                    result = cloudinary.uploader.upload(
-                        uploaded_file,
-                        folder='Notes_uploaded/',
-                        resource_type='raw'  # force PDF as raw
-                    )
-                    # Save the file to CloudinaryField using a CloudinaryFile object
-                    from cloudinary.models import CloudinaryField
-                    from cloudinary.utils import cloudinary_url
-                    note.file = result['public_id']
-                # else: let CloudinaryField handle normal upload
-
-            note.save()
-            messages.success(request, 'Note uploaded successfully.')
-            return redirect('notes:my_upload')
-    else:
-        form = NoteForm()
-
-    return render(request, 'notes/upload.html', {'form': form})
 
 
 def register(request):
