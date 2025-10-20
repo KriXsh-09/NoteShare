@@ -1,0 +1,107 @@
+/* Reset / Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    background: #f9f9f9;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Navbar (same as home) */
+.navbar {
+    background-color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ff9800;
+}
+
+/* Page Title */
+h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: left;
+    color: #333;
+}
+
+/* PDF Viewer */
+iframe {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    text-align: center;
+}
+.btn-primary {
+    background-color: #ff9800;
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #e68900;
+    transform: translateY(-2px);
+}
+.btn-secondary {
+    background-color: #555;
+    color: white;
+    margin-left: 0.5rem;
+}
+.btn-secondary:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+}
+
+/* Footer */
+.footer {
+    background: #333;
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+    margin-top: 3rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    iframe {
+        height: 400px;
+    }
+    h2 {
+        font-size: 1.5rem;
+    }
+}

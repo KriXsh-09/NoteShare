@@ -8,7 +8,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 	path('admin/', admin.site.urls),
-	path('', include(('NoteShare.notes.urls', 'notes'), namespace='notes')),
+	path('', include(('notes.urls', 'notes'), namespace='notes')),
 ]
 
 

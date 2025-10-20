@@ -1,13 +1,16 @@
-def view_note(request, note_id):
-	note = get_object_or_404(Note, id=note_id)
-	return render(request, 'notes/view_note.html', {'note': note})
+
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Note
 from .forms import NoteForm, RegisterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
+import cloudinary.uploader
 
+
+def view_note(request, note_id):
+	note = get_object_or_404(Note, id=note_id)
+	return render(request, 'notes/view_note.html', {'note': note})
 
 def index(request):
 	return render(request, 'notes/index.html')
@@ -27,15 +30,28 @@ def my_upload(request):
 
 @login_required
 def delete_note(request, note_id):
-	note = get_object_or_404(Note, id=note_id, uploaded_by=request.user)
-	if request.method == "POST":
-		note.file.delete()  # Deletes file from storage
-		note.delete()
-		messages.success(request, "Note deleted successfully.")
-		return redirect('notes:my_upload')
-	else:
-		messages.error(request, "Invalid request.")
-		return redirect('notes:my_upload')
+    note = get_object_or_404(Note, id=note_id, uploaded_by=request.user)
+
+    if request.method == "POST":
+        # Delete file from Cloudinary if it exists
+        if note.file:
+            try:
+                # Safely get public_id from the Cloudinary field
+                public_id = getattr(note.file, "public_id", None)
+                if public_id:
+                    cloudinary.uploader.destroy(public_id)
+            except Exception as e:
+                print(f"Cloudinary deletion error: {e}")
+
+        # Delete the database record
+        note.delete()
+
+        messages.success(request, "Note deleted successfully.")
+        return redirect('notes:my_upload')
+    else:
+        messages.error(request, "Invalid request.")
+        return redirect('notes:my_upload')
+
 
 
 @login_required

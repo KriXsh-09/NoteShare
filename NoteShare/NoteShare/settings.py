@@ -22,7 +22,7 @@ INSTALLED_APPS = [
 'django.contrib.sessions',
 'django.contrib.messages',
 'django.contrib.staticfiles',
-'NoteShare.notes.apps.NotesConfig',
+'notes',
 'cloudinary_storage',
 'cloudinary',
 ]
@@ -40,7 +40,7 @@ MIDDLEWARE = [
 ]
 
 
-ROOT_URLCONF = 'NoteShare.NoteShare.urls'
+ROOT_URLCONF = 'NoteShare.urls'
 
 
 TEMPLATES = [
@@ -58,11 +58,13 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = 'NoteShare.NoteShare.wsgi.application'
+WSGI_APPLICATION = 'NoteShare.wsgi.application'
 
-import dj_database_url
 DATABASES = {
-'default': dj_database_url.config(default=config('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
