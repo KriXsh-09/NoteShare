@@ -9,8 +9,5 @@ class Note(models.Model):
     uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs):
-        # If the uploaded file is PDF, force resource_type='raw'
-        if self.file and str(self.file).endswith('.pdf'):
-            self.file.resource_type = 'raw'
-        super().save(*args, **kwargs)
+    def __str__(self):
+        return f"{self.title} - {self.uploaded_by.username}"
