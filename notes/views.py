@@ -1,16 +1,62 @@
-
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from cloudinary.utils import cloudinary_url
 from .models import Note
 from .forms import NoteForm, RegisterForm
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.core.paginator import Paginator
 import cloudinary.uploader
 
+# ------------------ DOWNLOAD VIEW ------------------
 
+@login_required
+def download_note(request, note_id):
+    """
+    Generates a signed Cloudinary URL for secure download
+    and redirects the user to it.
+    """
+    note = get_object_or_404(Note, id=note_id)
+
+    if not note.file:
+        messages.error(request, "File not available.")
+        return redirect('notes:home')
+
+    # Generate signed URL valid for 1 minute (adjust as needed)
+    url, options = cloudinary_url(
+        note.file.public_id,
+        resource_type='auto',
+        type='private',  # Use 'private' for signed URLs
+        sign_url=True,
+        expires_at=60
+    )
+    return HttpResponseRedirect(url)
+
+
+# ------------------ PREVIEW VIEW ------------------
+
+@login_required
 def view_note(request, note_id):
-	note = get_object_or_404(Note, id=note_id)
-	return render(request, 'notes/view_note.html', {'note': note})
+    """
+    Generates a signed Cloudinary URL for preview.
+    Works for images, PDFs, videos, etc.
+    """
+    note = get_object_or_404(Note, id=note_id)
+
+    if not note.file:
+        messages.error(request, "File not available.")
+        return redirect('notes:home')
+
+    # Signed URL for preview, valid for 1 minute
+    url, options = cloudinary_url(
+        note.file.public_id,
+        resource_type='auto',
+        type='private',
+        sign_url=True,
+        expires_at=60
+    )
+
+    return render(request, 'notes/view_note.html', {'file_url': url, 'note': note})
+
 
 def index(request):
 	return render(request, 'notes/index.html')
@@ -83,11 +129,11 @@ def register(request):
 def login(request):
     return render(request, 'notes/login.html')
 
-
+'''
 def view_note(request, note_id):
     note = get_object_or_404(Note, id=note_id)
     return render(request, 'notes/view_note.html', {'note': note})
-
+'''
 def search_notes(request):
     query = request.GET.get('q', '')
     results = Note.objects.filter(title__icontains=query) if query else []
