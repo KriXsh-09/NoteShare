@@ -4,9 +4,8 @@ dj-database-url==3.0.1
 psycopg2-binary==2.9.11
 sqlparse==0.5.3
 
-# === Static & Media Storage ===
-cloudinary==1.44.1
-django-cloudinary-storage==0.3.0
+# === Storage ===
+supabase==2.8.0
 
 # === Server & Deployment ===
 gunicorn==23.0.0

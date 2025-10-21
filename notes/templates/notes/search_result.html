@@ -22,7 +22,7 @@
         <div class="note-card">
           <h4>{{ note.title }}</h4>
           <p>Uploaded by: {{ note.uploaded_by.username }}</p>
-          <a href="{{ note.file.url }}" class="btn btn-primary" download>Download</a>
+          <a href="{% url 'notes:download' note.id %}" class="btn btn-primary" download>Download</a>
           <a href="{% url 'notes:view_note' note.id %}" class="btn btn-secondary">View</a>
         </div>
       {% endfor %}

@@ -23,8 +23,6 @@ INSTALLED_APPS = [
 'django.contrib.messages',
 'django.contrib.staticfiles',
 'notes',
-'cloudinary_storage',
-'cloudinary',
 ]
 
 
@@ -101,20 +99,14 @@ STATICFILES_DIRS = [BASE_DIR / 'notes' / 'static']
 # Add this line near your STATIC_ROOT setting
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-import cloudinary
+# Supabase Configuration
+SUPABASE_URL = config("SUPABASE_URL")
+SUPABASE_KEY = config("SUPABASE_KEY")
+SUPABASE_BUCKET = config("SUPABASE_BUCKET", default="notes")
 
-cloudinary.config( 
-  cloud_name = config('CLOUDINARY_NAME'), 
-  api_key = config('CLOUDINARY_API_KEY'), 
-  api_secret = config('CLOUDINARY_API_SECRET'), 
-  secure = True
-)
-
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-#MEDIA_URL = '/media/'
-#MEDIA_ROOT = BASE_DIR / 'media'
+# Media files configuration for temporary file handling
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_REDIRECT_URL = 'notes:home'
 LOGOUT_REDIRECT_URL = 'notes:index'
