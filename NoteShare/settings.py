@@ -103,6 +103,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 SUPABASE_URL = config("SUPABASE_URL")
 SUPABASE_KEY = config("SUPABASE_KEY")
 SUPABASE_BUCKET = config("SUPABASE_BUCKET", default="notes")
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
 
 # Media files configuration for temporary file handling
 MEDIA_URL = '/media/'
