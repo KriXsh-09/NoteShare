@@ -3,18 +3,10 @@ import os
 from pathlib import Path
 from decouple import config
 
-
-
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 SECRET_KEY = config('SECRET_KEY')
-
-
 DEBUG = config('DEBUG', default=False, cast=bool)
-
 ALLOWED_HOSTS = ['*']
-
-
 INSTALLED_APPS = [
 'django.contrib.admin',
 'django.contrib.auth',
@@ -24,8 +16,6 @@ INSTALLED_APPS = [
 'django.contrib.staticfiles',
 'notes',
 ]
-
-
 MIDDLEWARE = [
 'django.middleware.security.SecurityMiddleware',
 'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -36,11 +26,7 @@ MIDDLEWARE = [
 'django.contrib.messages.middleware.MessageMiddleware',
 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-
 ROOT_URLCONF = 'NoteShare.urls'
-
-
 TEMPLATES = [
 {
 'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -55,32 +41,36 @@ TEMPLATES = [
 },
 ]
 
-
 WSGI_APPLICATION = 'NoteShare.wsgi.application'
-
-
 import dj_database_url
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Try to get DATABASE_URL from .env
+# Add these at the top of your settings.py
+from dotenv import load_dotenv
+from urllib.parse import urlparse, parse_qsl
+
+load_dotenv()
+
+# Replace the DATABASES section of your settings.py with this
+tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': tmpPostgres.path.replace('/', ''),
+        'USER': tmpPostgres.username,
+        'PASSWORD': tmpPostgres.password,
+        'HOST': tmpPostgres.hostname,
+        'PORT': 5432,
+        'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
+    }
 }
 
-
 AUTH_PASSWORD_VALIDATORS = []
-
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
-
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -93,7 +83,6 @@ SUPABASE_URL = config("SUPABASE_URL")
 SUPABASE_KEY = config("SUPABASE_KEY")
 SUPABASE_BUCKET = config("SUPABASE_BUCKET", default="notes")
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-
 
 # Media files configuration for temporary file handling
 MEDIA_URL = '/media/'
