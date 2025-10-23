@@ -39,7 +39,7 @@ class Note(models.Model):
         """Override save to ensure clean validation"""
         self.full_clean()
         super().save(*args, **kwargs)
-
+'''
     def upload_to_supabase(self, file):
         """
         Uploads file to Supabase storage and saves file path.
@@ -70,6 +70,91 @@ class Note(models.Model):
         except Exception as e:
             logger.error(f"Failed to upload file {file.name} to Supabase: {e}")
             raise Exception(f"Upload failed: {str(e)}")
+'''
+def upload_to_supabase(self, file):
+    """
+    Uploads file to Supabase storage and saves file path.
+    Backward-compatible: works with older supabase-py (dict) and newer (requests.Response).
+    """
+    try:
+        from decouple import config
+        from supabase import create_client
+        import requests
+        import json
+
+        # Initialize Supabase client
+        SUPABASE_URL = config("SUPABASE_URL")
+        SUPABASE_KEY = config("SUPABASE_KEY")
+        SUPABASE_BUCKET = config("SUPABASE_BUCKET", default="notes")
+        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+        unique_name = f"{uuid.uuid4()}_{file.name}"
+        data = file.read()
+
+        # Upload call
+        res = supabase.storage.from_(SUPABASE_BUCKET).upload(unique_name, data)
+
+        # Determine success for multiple possible response types
+        success = False
+        debug_info = {"type": type(res).__name__}
+
+        # Case A: dict-like response (older SDK)
+        if isinstance(res, dict):
+            debug_info["dict"] = res
+            # older SDK might return 'Key', 'path', or a nested structure
+            if res.get("Key") or res.get("path") or res.get("key"):
+                success = True
+
+        # Case B: requests.Response (newer SDK)
+        elif hasattr(res, "status_code"):
+            debug_info["status_code"] = getattr(res, "status_code", None)
+            # consider 200/201/204 as success
+            if res.status_code in (200, 201, 204):
+                # attempt to parse JSON body for additional confirmation
+                try:
+                    body = res.json()
+                    debug_info["json"] = body
+                    if isinstance(body, dict) and (body.get("Key") or body.get("path") or body.get("KeyName")):
+                        success = True
+                    else:
+                        # If status code indicates success, accept it
+                        success = True
+                except Exception:
+                    # No JSON body — but status code indicates success
+                    success = True
+            else:
+                # not success
+                try:
+                    debug_info["text"] = res.text
+                except Exception:
+                    debug_info["text"] = "<unreadable response>"
+
+        # Case C: other truthy responses (fallback)
+        else:
+            debug_info["repr"] = repr(res)
+            # try naive truthiness
+            try:
+                if res:
+                    success = True
+            except Exception:
+                success = False
+
+        if success:
+            self.file_name = file.name
+            self.file_path = unique_name
+            self.save()
+            logger.info(f"Successfully uploaded file {file.name} to Supabase")
+            logger.debug(f"Supabase upload debug: {debug_info}")
+            return
+        else:
+            logger.error(f"Supabase upload failed for file {file.name}. Debug: {debug_info}")
+            raise Exception(f"Upload failed: {debug_info}")
+
+    except Exception as e:
+        # preserve the original exception message and log full context
+        logger.error(f"Failed to upload file {file.name} to Supabase: {e}")
+        raise Exception(f"Upload failed: {str(e)}")
+
 
     def get_public_url(self):
         """
