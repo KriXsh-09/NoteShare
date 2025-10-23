@@ -45,17 +45,20 @@ WSGI_APPLICATION = 'NoteShare.wsgi.application'
 import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Add these at the top of your settings.py
-from dotenv import load_dotenv
-from urllib.parse import urlparse, parse_qsl
-
-import os
 from dotenv import load_dotenv
 from urllib.parse import urlparse, parse_qsl
 
 load_dotenv()
 
-tmpPostgres = urlparse(os.getenv("DATABASE_URL", ""))
+db_url = os.getenv("DATABASE_URL")
+
+if not db_url:
+    raise Exception("DATABASE_URL not set in environment!")
+
+tmpPostgres = urlparse(db_url)
+
+if not tmpPostgres.path or tmpPostgres.path == "/":
+    raise Exception("Database name missing in DATABASE_URL!")
 
 DATABASES = {
     'default': {
@@ -68,6 +71,7 @@ DATABASES = {
         'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
     }
 }
+
 
 
 AUTH_PASSWORD_VALIDATORS = []
